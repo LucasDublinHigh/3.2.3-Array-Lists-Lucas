@@ -1,0 +1,139 @@
+/*
+ * Interactive ArrayList Program
+ * Demonstrates ArrayList methods and user input with Scanner.
+ */
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class InteractiveList {
+
+    public static void main(String[] args) {
+        
+        // Create Scanner object for user input
+        Scanner scanner = new Scanner(System.in);
+        
+        // 1. Create a list with at least three String objects.
+        ArrayList<String> shoppingList = new ArrayList<String>();
+        shoppingList.add("Apples");
+        shoppingList.add("Milk");
+        shoppingList.add("Bread");
+
+        boolean running = true;
+
+        // 2. Iterate with a while loop until the user wants to quit.
+        while (running) {
+            
+            // 7. Display all items in the list, numbered from 1 to n.
+            System.out.println("\n--- Your Current List ---");
+            if (shoppingList.isEmpty()) {
+                System.out.println("The list is empty.");
+            } else {
+                for (int i = 0; i < shoppingList.size(); i++) {
+                    // Display (i + 1) for 1-based numbering
+                    System.out.println((i + 1) + ". " + shoppingList.get(i));
+                }
+            }
+            System.out.println("-------------------------");
+
+            // 3. Prompt the user for a command.
+            System.out.println("Would you like to (a)dd, (i)nsert, (r)emove, Re(p)lace or (q)uit?");
+            
+            // 4. Use Scanner's nextLine method to get the command.
+            String command = scanner.nextLine().toLowerCase(); // Use toLowerCase for case-insensitivity
+
+            // 5. Use if/else if structure to handle commands
+            
+            // (a): Add an element
+            if (command.equals("a")) {
+                System.out.print("Enter an item to add: ");
+                String itemToAdd = scanner.nextLine();
+                shoppingList.add(itemToAdd);
+                System.out.println("'" + itemToAdd + "' was added to the end of the list.");
+            
+            // (i): Insert an element
+            } else if (command.equals("i")) {
+                System.out.print("Enter an item to insert: ");
+                String itemToInsert = scanner.nextLine();
+                System.out.print("Enter the position (1 to " + (shoppingList.size() + 1) + "): ");
+                
+                try {
+                    int position = Integer.parseInt(scanner.nextLine());
+                    // 8. Validate input
+                    // For insert, valid user positions are 1 to size() + 1
+                    if (position >= 1 && position <= shoppingList.size() + 1) {
+                        // Convert 1-based user position to 0-based index
+                        shoppingList.add(position - 1, itemToInsert);
+                        System.out.println("'" + itemToInsert + "' was inserted at position " + position + ".");
+                    } else {
+                        System.out.println("Invalid position. Must be between 1 and " + (shoppingList.size() + 1) + ".");
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid input. Please enter a number.");
+                }
+
+            // (r): Remove an element
+            } else if (command.equals("r")) {
+                // 8. Validate input - check if list is empty
+                if (shoppingList.isEmpty()) {
+                    System.out.println("The list is empty. Nothing to remove.");
+                    continue; // Skip to the next loop iteration
+                }
+                
+                System.out.print("Enter the position to remove (1 to " + shoppingList.size() + "): ");
+                try {
+                    int position = Integer.parseInt(scanner.nextLine());
+                    // 8. Validate input
+                    // For remove, valid user positions are 1 to size()
+                    if (position >= 1 && position <= shoppingList.size()) {
+                        // Convert 1-based user position to 0-based index
+                        String removedItem = shoppingList.remove(position - 1);
+                        System.out.println("'" + removedItem + "' was removed from position " + position + ".");
+                    } else {
+                        System.out.println("Invalid position. Must be between 1 and " + shoppingList.size() + ".");
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid input. Please enter a number.");
+                }
+
+            // (p): Replace an element
+            } else if (command.equals("p")) {
+                // 8. Validate input - check if list is empty
+                if (shoppingList.isEmpty()) {
+                    System.out.println("The list is empty. Nothing to replace.");
+                    continue; // Skip to the next loop iteration
+                }
+
+                System.out.print("Enter the position to replace (1 to " + shoppingList.size() + "): ");
+                try {
+                    int position = Integer.parseInt(scanner.nextLine());
+                    // 8. Validate input
+                    // For replace, valid user positions are 1 to size()
+                    if (position >= 1 && position <= shoppingList.size()) {
+                        System.out.print("Enter the new item: ");
+                        String newItem = scanner.nextLine();
+                        // Convert 1-based user position to 0-based index
+                        String oldItem = shoppingList.set(position - 1, newItem);
+                        System.out.println("'" + oldItem + "' at position " + position + " was replaced with '" + newItem + "'.");
+                    } else {
+                        System.out.println("Invalid position. Must be between 1 and " + shoppingList.size() + ".");
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid input. Please enter a number.");
+                }
+
+            // (q): Quit the program
+            } else if (command.equals("q")) {
+                running = false;
+                System.out.println("Goodbye!");
+            
+            // Invalid command
+            } else {
+                // 9. Inform the user of invalid input
+                System.out.println("Invalid command. Please try again.");
+            }
+        }
+
+        // Close the scanner
+        scanner.close();
+    }
+}
